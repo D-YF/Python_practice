@@ -4,6 +4,7 @@ class ListNode(object):
         self.val = val
         self.next = next
 
+# Add two numbers
 class Solution(object):
     def addTwoNumbers(self, l1, l2):
         """
@@ -32,3 +33,32 @@ class Solution(object):
             cur.next = ListNode(val=addReminder)
 
         return result.next
+
+
+
+class Solution(object):
+    def lengthOfLongestSubstring(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        save = []
+        count = 0
+
+        if len(s) == 1 : return 1
+        
+        for x in s:
+            if x in save:
+                if len(save)>count:
+                    count = len(save)
+                idx = save.index(x)+1
+                for _ in range(idx):
+                    save.pop(0)
+            save.append(x)
+
+        if len(s)==len(save) or len(save)>count: return len(save)
+        return count
+
+s = "aab"
+test = Solution()
+print(test.lengthOfLongestSubstring(s))
