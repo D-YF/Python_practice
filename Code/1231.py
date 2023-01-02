@@ -59,6 +59,47 @@ class Solution(object):
         if len(s)==len(save) or len(save)>count: return len(save)
         return count
 
-s = "aab"
-test = Solution()
-print(test.lengthOfLongestSubstring(s))
+class Solution(object):
+    # Slide Windows
+    def lengthOfLongestSubstring(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        save = []
+        cur_len = 0
+        max_len = 0
+
+        for x in s:
+            cur_len += 1
+            while x in save:
+                cur_len -= 1
+                save.pop(0)
+            if cur_len > max_len: max_len = cur_len
+
+            save.append(x)
+
+        return max_len
+
+s = "a"
+# test = Solution()
+# print(test.lengthOfLongestSubstring(s))
+
+class Solution(object):
+    def minWindow(self, s, t):
+        """
+        :type s: str
+        :type t: str
+        :rtype: str
+        """
+        s_len = len(s)
+        t_len = len(t)
+        if t_len>s_len: return ""
+
+        Done = False
+        left = 0
+        right = left+t_len
+        curr = s_len[left:right]
+
+        while not Done:
+            pass
