@@ -36,7 +36,29 @@ class Solution(object):
             return 0
         return minlen
 
-nums = [1,2,3,4,5]
-target = 15
+class Solution(object):
+    def minSubArrayLen(self, target, nums):
+        """
+        :type target: int
+        :type nums: List[int]
+        :rtype: int
+        """
+        left = 0
+        minlen = float("inf")
+        cur_sum = 0
+
+        for i in range(len(nums)):
+            cur_sum += nums[i]
+
+            while cur_sum >= target:
+                minlen = min(i-left+1, minlen)
+                cur_sum -= nums[left]
+                left += 1
+
+        return 0 if minlen==float("inf") else minlen
+
+
+nums = [1,1,1,1]
+target = 5
 sol = Solution()
 print(sol.minSubArrayLen(target,nums))
