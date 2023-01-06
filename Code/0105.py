@@ -61,4 +61,104 @@ class Solution(object):
 
         return new_head.next
         
-head = [], val = 1
+# head = [], val = 1
+
+class Node(object):
+    def __init__(self, val=0):
+        self.val = val
+        self.next = None
+
+class MyLinkedList(object):
+    def __init__(self):
+        self.head = Node()
+        self.size = 0
+
+    def get(self, index):
+        """
+        :type index: int
+        :rtype: int
+        """
+        if index<0 or index>=self.size:
+            return -1
+        cur = self.head.next
+        for _ in range(index):
+            cur = cur.next
+        return cur.val
+
+    def addAtHead(self, val):
+        """
+        :type val: int
+        :rtype: None
+        """
+        NewNode = Node(val)
+        NewNode.next = self.head.next
+        self.head.next = NewNode
+        self.size += 1
+        return None
+
+    def addAtTail(self, val):
+        """
+        :type val: int
+        :rtype: None
+        """
+        cur = self.head
+        tail = Node(val)
+        while cur.next:
+            cur = cur.next
+        
+        cur.next = tail
+        self.size += 1
+        return None
+
+    def addAtIndex(self, index, val):
+        """
+        :type index: int
+        :type val: int
+        :rtype: None
+        """
+        if index==0:
+            self.addAtHead(val)
+            return
+        elif index==self.size:
+            self.addAtTail(val)
+            return
+        elif index>self.size:
+            return
+        
+        NewNode = Node(val)
+        cur = self.head.next
+        for i in range(index-1):
+            cur = cur.next
+        NewNode.next = cur.next
+        cur.next = NewNode
+        self.size += 1
+        return None
+
+
+    def deleteAtIndex(self, index):
+        """
+        :type index: int
+        :rtype: None
+        """
+        # Not head.next (might delete index=0)
+        cur = self.head
+
+        if index<0 or index >= self.size:
+            return None
+
+        for i in range(index):
+            cur = cur.next
+
+        cur.next = cur.next.next
+        self.size -= 1
+        return None
+
+
+# Your MyLinkedList object will be instantiated and called as such:
+obj = MyLinkedList()
+obj.addAtHead(1)
+obj.addAtTail(3)
+obj.addAtIndex(1,2)
+print(obj.get(6))
+obj.deleteAtIndex(0)
+print(obj.get(0))
