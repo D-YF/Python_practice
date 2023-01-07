@@ -38,4 +38,34 @@ class Solution(object):
         
         pre = None
         cur = head
-        recursive(pre, cur)
+        return recursive(pre, cur)
+
+
+# Definition for singly-linked list.
+class ListNode(object):
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+    
+class Solution(object):
+    def swapPairs(self, head):
+        """
+        :type head: ListNode
+        :rtype: ListNode
+        """
+        result = ListNode(next=head)
+        pre = result
+        
+        while pre.next and pre.next.next:
+            cur = pre.next
+            later = pre.next.next
+
+            pre.next = later
+
+            cur.next = later.next
+
+            later.next = cur
+
+            pre = pre.next.next
+
+        return result.next
