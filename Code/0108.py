@@ -102,3 +102,4 @@ class Solution(object):
                     count = count.next
 
         return None
+
