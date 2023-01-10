@@ -203,3 +203,5 @@ nums3 = [-1,2]
 nums4 = [0,2]
 sol = Solution()
 print(sol.fourSumCount(nums1, nums2, nums3, nums4))
+
+
