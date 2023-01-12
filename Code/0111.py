@@ -164,6 +164,123 @@ class Solution(object):
 
         return "".join(s)
 
-s = " the sky  is   blue  "
+# s = " the sky  is   blue  "
+# sol = Solution()
+# print(sol.reverseWords(s))
+
+
+class Solution(object):
+    def reverseLeftWords(self, s, n):
+        """
+        :type s: str
+        :type n: int
+        :rtype: str
+        """
+        return s[n:]+s[:n]
+
+# s =  "lrloseumgh"
+# k= 6
+# sol = Solution()
+# print(sol.reverseLeftWords(s, k))
+
+class Solution(object):
+    def reverseLeftWords(self, s, n):
+        """
+        :type s: str
+        :type n: int
+        :rtype: str
+        """
+        ans = ""
+        N = len(s)
+
+        for i in range(n, n+N):
+            ans += s[i % N]
+        return ans
+
+# s = "abcdedf"
+# k = 2
+# sol = Solution()
+# print(sol.reverseLeftWords(s, k))
+
+class Solution(object):
+    def strStr(self, haystack, needle):
+        """
+        :type haystack: str
+        :type needle: str
+        :rtype: int
+        """
+        N_needle = len(needle)
+        N_haystack = len(haystack)
+
+        for i in range(N_haystack):
+            if haystack[i]==needle[0]:
+                cur = 0
+                while (i+cur)<N_haystack and cur<N_needle:
+                    if haystack[i+cur]==needle[cur]:
+                        cur += 1
+                    else:
+                        break
+                if cur == N_needle:
+                    return i
+        return -1
+
+# haystack = "leetcode"
+# needle = "leeto"
+# sol = Solution()
+# print(sol.strStr(haystack, needle))
+
+
+class Solution(object):
+    def getLPSarray(self, pattern):
+        N = len(pattern)
+        length = 0
+
+        LPS = [0]*N
+        i = 1
+        while i<N:
+        ## e.g. aadaadaaf
+            if pattern[i]==pattern[length]:
+                length += 1
+                LPS[i] = length
+                i += 1
+            else:
+                if length == 0:
+                    LPS[i] = 0
+                    i += 1
+                else:
+                    ## This line is hard to understand
+                    ## Step back to check new suffix
+                    length = LPS[length-1]
+        return LPS
+
+    def strStr(self, haystack, needle):
+        """
+        :type haystack: str
+        :type needle: str
+        :rtype: int
+        """
+        N = len(haystack)
+        M = len(needle)
+
+        LPS = self.getLPSarray(needle)
+        i, j = 0, 0
+
+        while i <= N-(M-j):
+            if haystack[i]==needle[j]:
+                i += 1
+                j += 1
+                if j==M:
+                    return i-M
+            else:
+                if j != 0:
+                    j = LPS[j-1]
+                else:
+                    ## This line is hard to understand
+                    i += 1
+
+        return -1
+
+needle = "aabaaf"
+haystack = "aabaabaaf"
 sol = Solution()
-print(sol.reverseWords(s))
+print(sol.strStr(haystack, needle))
