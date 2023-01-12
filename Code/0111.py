@@ -107,9 +107,63 @@ class Solution(object):
 # print(sol.replaceSpace(s))
 
 class Solution(object):
+    def reverseStr(self, s):
+        N = len(s)
+        left, right = 0, N-1
+
+        while left<right:
+            temp = s[left]
+            s[left] = s[right]
+            s[right] = temp
+
+            left += 1
+            right -= 1
+        
+        return s
+    
+
     def reverseWords(self, s):
         """
         :type s: str
         :rtype: str
         """
+        N = len(s)
+        s = list(s)
+        left, right = 0, N-1
         
+        while s[left]==' ' or s[right]==' ':
+            if s[left]==' ': 
+                left += 1
+            if s[right]==' ': 
+                right -= 1
+        s = s[left:right+1]
+
+        s = self.reverseStr(s)
+        N = len(s)
+        
+        new_s = []
+        for i in range(N):
+            if s[i]==' ':
+                if new_s[-1] != ' ':
+                    new_s.append(s[i])
+                else:
+                    continue
+            else: 
+                new_s.append(s[i])
+
+        s = new_s
+        N = len(s)
+        left, right = 0, 0
+        while right+1<=N:
+            if right+1==N or s[right+1]==' ':
+                s[left:right+1] = self.reverseStr(s[left:right+1])
+                right += 2
+                left = right
+            else:
+                right += 1
+
+        return "".join(s)
+
+s = " the sky  is   blue  "
+sol = Solution()
+print(sol.reverseWords(s))
