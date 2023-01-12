@@ -230,6 +230,7 @@ class Solution(object):
 # print(sol.strStr(haystack, needle))
 
 
+# KMP O(N) and O(N)
 class Solution(object):
     def getLPSarray(self, pattern):
         N = len(pattern)
