@@ -274,6 +274,7 @@ class Solution(object):
                     return i-M
             else:
                 if j != 0:
+                    ## j-1 is crucial
                     j = LPS[j-1]
                 else:
                     ## This line is hard to understand
