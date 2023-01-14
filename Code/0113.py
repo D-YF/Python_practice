@@ -205,10 +205,43 @@ class MyStack:
     def empty(self) -> bool:
         return not self.queue
 
-# Your MyStack object will be instantiated and called as such:
-obj = MyStack()
-obj.push(1)
-obj.push(2)
-print(obj.top())
-print(obj.pop())
-print(obj.empty())
+# # Your MyStack object will be instantiated and called as such:
+# obj = MyStack()
+# obj.push(1)
+# obj.push(2)
+# print(obj.top())
+# print(obj.pop())
+# print(obj.empty())
+
+class Solution:
+    def isValid(self, s: str) -> bool:
+        if len(s)%2==1:
+            return False
+
+        stack = []
+        for item in s:
+            if item=='(':
+                stack.append(')')
+            elif item=='[':
+                stack.append(']')
+            elif item=='{':
+                stack.append('}')
+            else:
+                if not stack or stack.pop() != item:
+                    return False
+            # elif item==')':
+            #     if not stack or stack.pop() != '(':
+            #         return False
+            # elif item==']':
+            #     if not stack or stack.pop() != '[':
+            #         return False
+            # elif item=='}':
+            #     if not stack or stack.pop() != '{':
+            #         return False
+
+        return True if not stack else False
+
+s = "()[][{()}]"
+sol = Solution()
+print(sol.isValid(s))
+
