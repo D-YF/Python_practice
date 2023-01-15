@@ -89,23 +89,26 @@ class Mydeque():
             self.queue.pop()
 
         self.queue.append(value)
+    
+    def front(self):
+        return self.queue[0]
 
 class Solution:
     def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
         ans = []
 
         N = len(nums)
-        i = 0
         myqueue = Mydeque()
-        while i<k-1:
+        for i in range(k):
             myqueue.push(nums[i])
-            i += 1
-        
-        while i<N:
+
+        ans.append(myqueue.front())
+
+        for i in range(k, N):
             myqueue.pop(nums[i-k])
             myqueue.push(nums[i])
 
-            ans.append(myqueue.queue[0])
+            ans.append(myqueue.front())
             i += 1
         return ans
 
