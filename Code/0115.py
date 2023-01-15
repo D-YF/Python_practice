@@ -112,7 +112,42 @@ class Solution:
             i += 1
         return ans
 
-nums = [1,3,-1,-3,5,3,6,7]
-k = 3
+# nums = [1,3,-1,-3,5,3,6,7]
+# k = 3
+# sol = Solution()
+# print(sol.maxSlidingWindow(nums, k))
+
+import heapq
+q = []
+heapq.heappush(q, (1,2))
+heapq.heappush(q, (4,4))
+heapq.heappush(q, (1,2))
+heapq.heappush(q, (2,2))
+heapq.heappop(q)
+# print(q)
+
+class Solution:
+    ## My First priority queue using heap
+    def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+        hashmap = {}
+        for item in nums:
+            hashmap[item] = hashmap.get(item, 0) + 1
+        
+        pri_que = []
+
+        for key, freq in hashmap.items():
+            heapq.heappush(pri_que, [freq, key])
+
+            if len(pri_que)>k:
+                heapq.heappop(pri_que)
+
+        ans = []
+        for item in pri_que:
+            ans.append(item[1])
+        
+        return ans
+
+nums = [1, 2, 2, 3, 5, 5, 2, 2]
+k = 2
 sol = Solution()
-print(sol.maxSlidingWindow(nums, k))
+print(sol.topKFrequent(nums, k))
