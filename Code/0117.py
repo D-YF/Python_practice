@@ -88,3 +88,140 @@ class Solution:
                 ans.append(node.val)
             
         return ans
+
+
+from collections import deque
+class Solution:
+    def levelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
+        ans = []
+        queue = deque()
+
+        if root==None:
+            return []
+        
+        queue.append(root)
+        while queue:
+            size = len(queue)
+            temp = []
+
+            for i in range(size):
+                cur = queue.popleft()
+                temp.append(cur.val)
+                if cur.left:
+                    queue.append(cur.left)
+                if cur.right:
+                    queue.append(cur.right)
+            ans.append(temp)
+        
+        return ans
+
+class Solution:
+    def levelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
+        ans = []
+        def bfs(root, depth):
+            if root==None:
+                return []
+            
+            if depth==len(ans): ans.append([])
+            ans[depth].append(root.val)
+            
+            bfs(root.left,  depth+1)
+            bfs(root.right, depth+1)
+        bfs(root, 0)
+        return ans
+
+class Solution:
+    def levelOrderBottom(self, root: Optional[TreeNode]) -> List[List[int]]:
+        ans = []
+        queue = deque()
+
+        if root==None:
+            return []
+        queue.append(root)
+        while queue:
+            size = len(queue)
+            temp = []
+
+            for i in range(size):
+                cur = queue.popleft()
+                temp.append(cur.val)
+                if cur.left:
+                    queue.append(cur.left)
+                if cur.right:
+                    queue.append(cur.right)
+            ans.append(temp)
+
+        return ans[::-1]
+
+#199
+class Solution:
+    def rightSideView(self, root: Optional[TreeNode]) -> List[int]:
+        ans = []
+        queue = deque()
+
+        if root==None:
+            return []
+        queue.append(root)
+
+        while queue:
+            size = len(queue)
+            for i in range(size):
+                cur = queue.popleft()
+                if cur.left:
+                    queue.append(cur.left)
+                if cur.right:
+                    queue.append(cur.right)
+                
+            ans.append(cur.val)
+        return ans
+
+# 637
+class Solution:
+    def averageOfLevels(self, root: Optional[TreeNode]) -> List[float]:
+        ans = []
+        queue = deque()
+        if root:
+            queue.append(root)
+        
+        while queue:
+            size = len(queue)
+            sum = 0
+
+            for i in range(size):
+                cur = queue.popleft()
+                sum += cur.val
+                if cur.left:
+                    queue.append(cur.left)
+                if cur.right:
+                    queue.append(cur.right)
+            
+            ans.append(sum/size)
+        return ans
+
+
+# 429
+# Definition for a Node.
+class Node:
+    def __init__(self, val=None, children=None):
+        self.val = val
+        self.children = children
+
+class Solution:
+    def levelOrder(self, root: 'Node') -> List[List[int]]:
+        ans = []
+        queue = deque()
+        if root:
+            queue.append(root)
+        
+        while queue:
+            temp = []
+            size = len(queue)
+
+            for i in range(size):
+                cur = queue.popleft()
+                temp.append(cur.val)
+
+                for child in cur.children:
+                    queue.append(child)
+            ans.append(temp)
+        return ans
