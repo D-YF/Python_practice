@@ -97,3 +97,21 @@ class Solution:
                 return min(self.minDepth(root.left), self.minDepth(root.right))+1
         
         return minD(root)
+
+class Solution:
+    def invertTree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+        def dfs(root):
+            if root==None:
+                return None
+            
+            temp = root.left
+            root.left = root.right
+            root.right = temp
+
+            dfs(root.left)
+            dfs(root.right)
+
+        dfs(root)
+
+        return root
+
