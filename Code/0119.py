@@ -107,3 +107,33 @@ class Solution:
         if root==None: return 0
         preorder(root, 1)
         return self.maxD
+
+class Solution:
+    def countNodes(self, root: Optional[TreeNode]) -> int:
+        if root==None:
+            return 0
+        
+        return 1 + self.countNodes(root.left) + self.countNodes(root.right)
+
+class Solution:
+    def countNodes(self, root: Optional[TreeNode]) -> int:
+        if root==None:
+            return 0
+        
+        leftDepth = 1
+        rightDepth = 1
+        left = root.left
+        right = root.right
+
+        while left:
+            leftDepth += 1
+            left = left.left
+        while right:
+            rightDepth += 1
+            right = right.right
+        
+        if leftDepth==rightDepth:
+            return 2**leftDepth - 1
+        
+        return 1+self.countNodes(root.left)+self.countNodes(root.right)
+            
