@@ -77,7 +77,7 @@ class Solution:
 
 class Solution:
     def buildTree(self, preorder: List[int], inorder: List[int]) -> Optional[TreeNode]:
-        if preorder==None:
+        if len(preorder)==0:
             return None
         
         root_val = preorder[0]
@@ -94,3 +94,21 @@ class Solution:
         root.left = self.buildTree(preorder_left, inorder_left)
         root.right = self.buildTree(preorder_right, inorder_right)
         return root
+
+class Solution:
+    def constructMaximumBinaryTree(self, nums: List[int]) -> Optional[TreeNode]:
+        if len(nums)==0:
+            return None
+        
+        val = max(nums)
+        index = nums.index(val)
+
+        root = TreeNode(val=val)
+        nums_left = nums[:index]
+        nums_right = nums[index+1:]
+
+        root.left = self.constructMaximumBinaryTree(nums_left)
+        root.right = self.constructMaximumBinaryTree(nums_right)
+
+        return root
+        
