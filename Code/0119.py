@@ -136,4 +136,3 @@ class Solution:
             return 2**leftDepth - 1
         
         return 1+self.countNodes(root.left)+self.countNodes(root.right)
-            
