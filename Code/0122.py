@@ -96,7 +96,7 @@ class Solution:
     def getMinimumDifference(self, root: Optional[TreeNode]) -> int:
         stack = []
         ans = float("INF")
-
+        pre = None
         def Traversal(curNode):
             nonlocal pre, ans
             if curNode==None: return None
@@ -112,3 +112,40 @@ class Solution:
         
         Traversal(root)
         return ans
+
+class Solution:
+    def __init__(self) -> None:
+        self.ans = []
+        self.preNode = None
+        self.maxNum = 0
+        self.count = 0
+    
+    def findMode(self, root: Optional[TreeNode]) -> List[int]:
+        def traverse(root):
+            if root==None: return None
+
+            traverse(root.left)
+            
+            curNode = root
+            if self.preNode==None:
+                self.count = 1
+            elif curNode.val==self.preNode.val:
+                self.count += 1
+            else:
+                self.count = 1
+            self.preNode = curNode
+
+            if self.count==self.maxNum:
+                self.ans.append(curNode.val)
+            elif self.count>self.maxNum:
+                self.maxNum = self.count
+                self.ans.clear()
+                self.ans.append(curNode.val)
+            
+            traverse(root.right)
+            return None
+
+        traverse(root)
+
+        return self.ans
+
