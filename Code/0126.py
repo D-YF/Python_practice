@@ -78,3 +78,31 @@ class Solution:
         
         traceback(nums, 0)
         return ans
+
+class Solution:
+    def findSubsequences(self, nums: List[int]) -> List[List[int]]:
+        path = []
+        ans = []
+
+        def traceback(nums, startIndex):
+            if len(path)>=2:
+                ans.append(path[:])
+            if startIndex==len(nums):
+                return
+            
+            used_list = [False]*201
+            # used_list = set()
+            for i in range(startIndex, len(nums)):
+                # if (nums[i] in used_list) or (path and nums[i]<path[-1]):
+                if used_list[nums[i]+100] == True or (path and nums[i]<path[-1]):
+                    continue
+                
+                path.append(nums[i])
+                traceback(nums, i+1)
+                path.pop()
+                # used_list.add(nums[i])
+                used_list[nums[i]+100] = True
+            return
+        
+        traceback(nums, 0)
+        return ans
