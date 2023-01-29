@@ -78,7 +78,6 @@ class Solution:
                 path.pop()
                 
                 dic[departure].append(destination)
-                dic[departure].sort()
 
             return
         
