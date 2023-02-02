@@ -53,3 +53,4 @@ class Solution:
                 n[i-1] = str(int(n[i-1]) - 1)
         
         return int("".join(n))
+
