@@ -43,7 +43,22 @@ public class Puppy {
         for (int num : array){
             System.out.println(num);
         }
-        
+        int n = Mymethod("just test", 2);
+        System.out.println(n);
 
     }
+
+    static int Mymethod(String text, int num){
+        System.out.println(text);
+
+        return num; 
+    }
+
+
+    public static int sum(int n){
+        if (n==0) return 0;
+        else return n+sum(n-1);        
+    }
+
+
 }
