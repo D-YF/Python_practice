@@ -14,6 +14,85 @@ public class BinaryTree {
         root = null;
     }
 
+    void IterativePreorder(Node root){
+        if(root==null){
+            System.out.println("The root is empty");
+            return;
+        }
+        Stack<Node> stack = new Stack<Node>();
+        stack.push(root);
+
+        while(stack.isEmpty() == false){
+            Node node = stack.pop();
+            System.out.print(node.key);
+            if (node.right != null)
+                stack.push(node.right);
+            if (node.left != null)
+                stack.push(node.left);
+        }
+        System.out.println();
+    }
+
+    void IterativeInorder(Node root){
+        if(root==null){
+            System.out.println("The root is empty");
+            return;
+        }
+
+        Stack<Node> stack = new Stack<Node>();
+        stack.push(root);
+        while(stack.isEmpty()==false){
+            Node cur = stack.pop();
+
+            if (cur==null){
+                Node printCur = stack.pop();
+                System.out.print(printCur.key);
+                continue;
+            }
+
+            if(cur.right != null){
+                stack.push(cur.right);
+            }
+            stack.push(cur);
+            stack.push(null);
+            if (cur.left != null){
+                stack.push(cur.left);
+            }
+
+        }
+        System.out.println();
+    }
+
+    void IterativePostorder(Node node){
+        if (node==null){
+            System.out.println("The tree is empty!");
+            return;
+        }
+
+        Stack<Node> stack = new Stack<Node>();
+        stack.push(node);
+        while(! stack.isEmpty()){
+            Node cur = stack.pop();
+
+            if(cur==null){
+                Node printCur = stack.pop();
+                System.out.print((printCur.key));
+                continue;
+            }
+
+            if(cur.right != null){
+                stack.push(cur.right);
+            }
+            if(cur.left != null){
+                stack.push(cur.left);
+            }
+            stack.push(cur);
+            stack.push(null);
+        }
+
+    }
+
+
     void printInorder(Node node){
         if (node==null)
             return;
@@ -40,27 +119,31 @@ public class BinaryTree {
         System.out.print(node.key+" ");
     }
 
-    void IterativePreorder(Node node){
-        if (node==null)
-            return;
+    // void IterativePreorder(Node node){
+    //     if (node==null)
+    //         return;
 
-        Stack<Node> stack = new Stack<Node>();
-        stack.push(node);
-        while(!stack.isEmpty()){
-            Node cur = stack.pop();
-            System.out.print(cur.key + " ");
-            if(cur.right != null)
-                stack.push(cur.right);
-            if(cur.left != null)
-                stack.push(cur.left);
-        }
+    //     Stack<Node> stack = new Stack<Node>();
+    //     stack.push(node);
+    //     while(!stack.isEmpty()){
+    //         Node cur = stack.pop();
+    //         System.out.print(cur.key + " ");
+    //         if(cur.right != null)
+    //             stack.push(cur.right);
+    //         if(cur.left != null)
+    //             stack.push(cur.left);
+    //     }
 
 
-    }
+    // }
 
 
     public void BFS(Node node){
         // O(N) and O(N)
+        if(node==null){
+            System.out.println("The root is empty");
+            return;
+        }
         Queue<Node> queue = new LinkedList<Node>();
         queue.add(node);
 
@@ -108,6 +191,14 @@ public class BinaryTree {
 
         System.out.println("Iteratively Preorder traversal:");
         tree.IterativePreorder(tree.root);
+
+        System.out.println("Iteratively Inorder traversal:");
+        tree.IterativeInorder(tree.root);
+
+        System.out.println("Iteratively Possorder traversal:");
+        tree.IterativePostorder(tree.root);
+
+
     }
 
 }
