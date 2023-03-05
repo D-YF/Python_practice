@@ -1,6 +1,8 @@
+import javax.swing.border.MatteBorder;
 import javax.xml.stream.EventFilter;
 
 import java.lang.annotation.Target;
+import java.nio.charset.CoderResult;
 import java.util.*;
 
 public class Algorithm {
@@ -155,6 +157,16 @@ public class Algorithm {
         towerOfHanoi(N-1, helper, end, start);
     }
 
+    static int Fibnacci_DP(int n){
+        int[] fib = new int[n+1];
+        fib[0] = 0;
+        fib[1] = 1;
+        for (int i=2; i<=n; i++){
+            fib[i] = fib[i-1] + fib[i-2];
+        }
+        return fib[n];
+    }
+
     public static void main(String args[]){
         // Test case for binary searching
         System.out.println("Test case for Binary searching:");
@@ -208,6 +220,19 @@ public class Algorithm {
         //Test case for tower of Hamnoi
         towerOfHanoi(3, 'A', 'C', 'B');
         
+        // Test case for Q-queen
+        Solution sol = new Solution();
+        List<List<String>> res = sol.solveNQueens(4);
+        for (int i=0; i<res.size(); i++){
+            sol.printBoard(res.get(i));
+        }
+
+        // System.out.println(res);
+
+        // Test case for DP_Fa
+        System.out.println("Test case for Fibnacci:");
+        System.out.println(Fibnacci_DP(3));
+
     }
 
 }
@@ -222,7 +247,8 @@ class Item {
     }
 }
 
-
+/*
+ * 
 class Solution
 {
     //Function to get the maximum total value in the knapsack.
@@ -252,4 +278,201 @@ class Solution
         }
         return ans;
    }
+}
+ */
+
+
+ class Solution {
+    List<List<String>> res = new ArrayList<>();
+
+    public List<List<String>> solveNQueens(int n) {
+        List<String> cur = new ArrayList<>();
+        backtraking(cur, 0, n);
+        return res;
+    }
+
+    void backtraking(List<String> board, int row, int n){
+        if(row==n){
+            List<String> result = board;
+            res.add(result);
+            // printBoard(res.get(0));
+            return;
+        }
+
+        for(int j=0; j<n; j++){
+            char[] cur_level = new char[n];
+            for(int index=0; index<n; index++){
+                if(index == j){
+                    cur_level[index] = 'Q';
+                    continue;
+                }
+                cur_level[index] = '.';
+            }
+            String cur_S = String.valueOf(cur_level);
+            if(isValid(board, n, row, j)){
+                board.add(cur_S);
+                backtraking(board, row+1, n);
+                board.remove(cur_S);
+                // printBoard(board);
+            }
+        }
+    }
+
+    void printBoard(List<String> board){
+        for (int i=0; i<board.size(); i++){
+            System.out.println(board.get(i));
+        }
+        System.out.println();
+    }
+
+    boolean isValid(List<String> board, int n, int row, int col){
+
+        for (int i=0; i<row; i++){
+            if(board.get(i).charAt(col)=='Q'){
+                return false;
+            }
+
+            if((col-i-1)>=0){
+                if(board.get(row-i-1).charAt(col-i-1)=='Q'){
+                    return false;
+                }
+            }
+
+            if((col+i+1)<n){
+                if(board.get(row-i-1).charAt(col+i+1)=='Q'){
+                    return false;
+                }
+            }
+            
+        }
+        return true;
+    }
+
+
+
+
+
+}
+
+
+
+class Solution1 {
+    public void solveSudoku(char[][] board) {
+        Backtrack(board);
+    }
+
+    boolean Backtrack(char[][] board){
+        for (int j=0; j<9; j++){
+            for(int i=0; i<9; i++){
+                if(board[i][j]=='.'){
+                    for (int k=1; k<=9; k++){
+                        char key = (char) (k + '0');
+                        board[i][j] = key;
+                        if(isValid(board, i, j)){
+                            if(Backtrack(board))
+                                return true;
+                        }
+                        board[i][j] = '.';
+                    }
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    boolean isValid(char[][] board, int row, int col){
+        char key = board[row][col];
+        for(int i=0; i<board.length; i++){
+            if(i!=row && board[i][col]==key)
+                return false;
+            if(i!=col && board[row][i]==key)
+                return false;
+        }
+
+        int start_row = row/3 * 3;
+        int start_col = col/3 * 3;
+        for(int i=start_row; i<start_row+3; i++){
+            for (int j=start_col; j<start_col+3; j++){
+                if(i!=row && j!= col && (board[i][j]==key))
+                    return false;
+            }
+        }
+
+        return true;
+    }
+
+}
+
+
+class Solution3{
+    static int maximumPath(int N, int Matrix[][])
+    {
+        int[][] dp = new int[N][N];
+        for(int i=0; i<N; i++){
+            dp[0][i] = Matrix[0][i];
+        }
+
+        for (int i=1; i<N; i++){
+            for(int j=0; j<N; j++){
+                if(j==0){
+                    int max_value = Math.max(dp[i-1][j], dp[i-1][j+1]);
+                    dp[i][j] = max_value + Matrix[i][j];
+                }
+                else if(j==N-1){
+                    int max_value = Math.max(dp[i-1][j], dp[i-1][j-1]);
+                    dp[i][j] = max_value + Matrix[i][j];
+                }
+                else{
+                    int max_value1 = Math.max(dp[i-1][j], dp[i-1][j-1]);
+                    int max_value = Math.max(max_value1, dp[i-1][j+1]);
+                    dp[i][j] = max_value + Matrix[i][j];
+                }
+            }
+        }
+
+        int ans = 0;
+        for (int i=0; i<N; i++){
+            if(ans < dp[N-1][i]){
+                ans = dp[N-1][i];
+            }
+        }
+
+        return ans;
+    }
+}
+
+class Solution4{
+
+
+    static Boolean isSubsetSum(int N, int arr[], int sum){
+        int[] dp = new int[sum+1];
+        dp[0] = 1;
+        for (int i=1; i<=sum; i++){
+            dp[i] = 0;
+        }
+
+        for(int i=0; i<N; i++){
+            for(int j=sum; j>=arr[i]; j--){
+                dp[j] = dp[j] + dp[j-arr[i]];
+            }
+        }
+        return (dp[sum]!=0) ? true : false;
+    }
+}
+
+class Solution5 {
+    public long count(int coins[], int N, int sum) {
+        long[] dp = new long[sum+1];
+        dp[0] = 1;
+        for (int i=1; i<=sum; i++){
+            dp[i] = 0;
+        }
+        for(int i=0; i<N; i++){
+            for(int j=coins[i]; j<=sum; j++){
+                dp[j] += dp[j-coins[i]];
+            }
+        }
+        return dp[sum];
+    }
 }
