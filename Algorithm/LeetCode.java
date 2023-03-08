@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 import javax.smartcardio.TerminalFactory;
 
 import java.util.*;
@@ -15,9 +13,14 @@ class Solution1 {
         for(int i=0; i<=n; i++){
             dp[i] = 0;
         }
-
+        // Iterate bags
         for(int i=1; i<=n; i++){
+            // Iterate items, could be duplicate
             for(int j=i; j<=n; j++){
+                // No break: dp[i] 
+                // Break   : 
+                //  -- i * dp[j-i] break (j-i) as well 
+                //  -- i * (j-i)   not break (j-i)
                 int value1 = Math.max(dp[j], (i)*dp[j-i]);
                 dp[j] = Math.max(value1, i*(j-i));
             }
@@ -169,6 +172,108 @@ class Solution4 {
         // return tail of this group 
         // as the pre Node of next group
         return future_tail;
+    }
+
+}
+
+
+class Solution5 {
+    public int findMaximumXOR(int[] nums) {
+        int ans = Integer.MIN_VALUE;
+        for(int i=0; i<nums.length; i++){
+            for(int j=i; j<nums.length; j++){
+                int cur = nums[i]^nums[j];
+                ans = (cur > ans) ? cur : ans;
+            }
+        }
+        return ans;
+    }
+}
+
+class Solution6 {
+    public int findMaximumXOR(int[] nums) {
+        int ans = Integer.MIN_VALUE;
+        int max_num = nums[0];
+        for(int i=1; i<nums.length; i++){
+            // max_num = (nums[i]>max_num) ? nums[i] : max_num;
+            max_num = Math.max(nums[i], max_num);
+        }    
+
+        for(int i=0; i<nums.length; i++){
+            // ans = ((max_num^nums[i])>ans) ? (max_num^nums[i]): ans;
+            ans = Math.max(max_num^nums[i], ans);
+        }
+        return ans;
+    }
+}
+
+class Solution7 {
+    public int openLock(String[] deadends, String target) {
+        // Edge case 1
+        if(target.equals("0000"))
+            return 0;
+        
+        HashSet<String> dead = new HashSet<String>();
+        for(String str : deadends){
+            dead.add(str);
+        }
+        
+        // Edge case 2
+        if(dead.contains("0000"))
+            return -1;
+
+        int step = 0;
+        HashSet<String> path = new HashSet<String>();
+        Queue<String> queue = new LinkedList<String>();
+        queue.add("0000");
+        path.add("0000");
+        // bfs using queue
+        // Each while loop is a same level (step)
+        while(!queue.isEmpty()){
+            int size = queue.size();
+            // Iterate all nodes in current level
+            for(int i=0; i<size; i++){
+                String cur = queue.poll();
+                // Target Solution
+                if(cur.equals(target))
+                    return step;
+                // All possible Next step
+                for(String next:getNext(cur)){
+                    if(!path.contains(next) && !dead.contains(next)){
+                        queue.add(next);
+                        path.add(next);
+                    }
+                }
+            }
+            step++;
+        }
+        // No solution
+        return -1;
+    }
+
+    char Upnext(char c){
+        return (c=='9') ? '0' : (char) (c+1);
+    }
+
+    char Downnext(char c){
+        return (c=='0') ? '9' : (char) (c-1);
+    }
+
+    List<String> getNext(String cur){
+        List<String> ans = new ArrayList<>();
+        char[] arr = cur.toCharArray();
+        for(int i=0; i<4; i++){
+            char c = arr[i];
+
+            arr[i] = Upnext(c);
+            ans.add(new String(arr));
+
+            arr[i] = Downnext(c);
+            ans.add(new String(arr));
+            // restore character
+            arr[i] = c;
+        }
+        return ans;
     }
 
 }
