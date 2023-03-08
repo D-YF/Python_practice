@@ -279,3 +279,57 @@ class Solution7 {
 }
 
 
+class Solution8 {
+    List<List<Integer>> ans = new ArrayList<>();
+    // LinkedList has method to remove last element .removerLast();
+    LinkedList<Integer> path = new LinkedList<>();
+    public List<List<Integer>> subsets(int[] nums) {
+        backtraking(nums, 0);
+        return ans;
+    }
+
+    // start_index to avoid dumplicate element
+    void backtraking(int[] num, int start_index){
+        // Important to CLONE path before adding to ans
+        ans.add(new ArrayList<>(path));
+        if(start_index==num.length){
+            return;
+        }
+        for(int i=start_index; i<num.length; i++){
+            path.add(num[i]);
+            // next start_index i+1
+            backtraking(num, i+1);
+            path.removeLast();
+        }
+    }
+
+}
+
+class Solution {
+    public String addSpaces(String s, int[] spaces) {
+        char[] arr = s.toCharArray();
+        int n = arr.length;
+        int l = spaces.length;
+        char[] ans = new char[n+l];
+
+        // original string index
+        int i=n-1;
+        // new string index
+        int j=ans.length-1;
+        int space_index = l-1;
+
+        while(i>=0){
+            // add space
+            if(i==spaces[space_index]){
+                ans[j--] = arr[i--];
+                ans[j--] = ' ';
+                space_index --;
+            }
+            // copy
+            else
+                ans[j--] = arr[i--];
+        }
+
+        return String.valueOf(ans);
+    }
+}
