@@ -305,7 +305,7 @@ class Solution8 {
 
 }
 
-class Solution {
+class Solution9 {
     public String addSpaces(String s, int[] spaces) {
         char[] arr = s.toCharArray();
         int n = arr.length;
@@ -333,3 +333,168 @@ class Solution {
         return String.valueOf(ans);
     }
 }
+
+
+class Solution10 {
+    List<List<Integer>> ans = new ArrayList<>();
+    LinkedList<Integer> path = new LinkedList<>();
+    public List<List<Integer>> combine(int n, int k) {
+        backtrack(n, k, 1);
+        return ans;
+    }
+
+    void backtrack(int n, int k, int start_index){
+        if(path.size() == k){
+            ans.add(new ArrayList<>(path));
+            return;
+        }
+        // BFS, iterate same level
+        for(int i=start_index; i<=n; i++){
+            path.add(i);
+            backtrack(n, k, i+1);
+            path.removeLast();
+        }
+    }
+
+}
+
+class Solution11 {
+    public int minDeletion(int[] nums) {
+        if(nums.length == 0)
+            return 0;
+        
+        int n = nums.length;
+        int[] new_nums = new int[n];
+        int index1 = 0;
+        int index2 = 0;
+        new_nums[index2++] = nums[index1++];
+
+        int ans = 0;
+
+        while(index1<n){
+            if((index2-1)%2==0 && nums[index1]==new_nums[index2-1] ){
+                ans ++;
+                index1 ++;
+            }
+            else{
+                new_nums[index2++] = nums[index1++];
+            }
+        }
+        if(index2 % 2 ==1)
+            ans++;
+        return ans;
+    }
+}
+
+class Solution12 {
+    public boolean increasingTriplet(int[] nums) {
+        int num1 = Integer.MAX_VALUE;
+        int num2 = Integer.MAX_VALUE;
+        for(int n: nums){
+            if(n<num1) num1 = n;
+            else if(n<num2) num2 = n;
+            else return true;
+        }
+    
+        return false;
+    }
+}
+
+class Solution13 {
+    int ans = Integer.MAX_VALUE;
+    int cur = 0;
+    public int minimumTotal(List<List<Integer>> triangle) {
+        backtrack(triangle, 0, 0);
+        return ans;
+    }
+    void backtrack(List<List<Integer>> triangle, int depth, int start_index){
+        if(depth==triangle.size()){
+            ans = Math.min(ans, cur);
+            return;
+        }
+
+        for(int i=0; i<2 && (start_index+i)<=depth; i++){
+            int value = triangle.get(depth).get(start_index+i);
+            cur += value;
+            backtrack(triangle, depth+1, start_index+i);
+            cur -= value;
+        }
+    }
+}
+
+class Solution14 {
+    public int minimumTotal(List<List<Integer>> triangle) {
+        int n = triangle.size();
+        int[] dp = new int[n];
+        int ans = Integer.MAX_VALUE;
+        dp[0] = triangle.get(0).get(0);
+        for(int i=1; i< n; i++){
+            dp[i] = 0;
+        }
+
+        for(int i=1; i<n; i++){
+            for(int j=0; j<=i; j++){
+                if(j==0){
+                    dp[j] += triangle.get(i).get(0);
+                }
+                else if(j==i){
+                    dp[j] = dp[j-1] + triangle.get(i).get(j);
+                }
+                else{
+                    int min_value = Math.min(dp[j-1], dp[j]);
+                    dp[j] = triangle.get(i).get(j) + min_value;
+                }
+            }
+        }
+
+        for(int i=0; i<n; i++){
+            ans = Math.min(ans, dp[i]);
+        }
+
+        return ans;
+
+    }
+}
+
+class Solution {
+    public int[][] diagonalSort(int[][] mat) {
+        int n=mat.length;
+        int m=mat[0].length;
+
+        //bubble sort
+        for(int j=0; j<m; j++){
+            int i =0;
+            for(int shift = 0; shift<n && shift<m; shift++){
+                for(int k=1; (j+k<=m-1-shift)&&(i+k<=n-1-shift); k++){
+                    // put the maximun to the end
+                    if(mat[i+k][j+k] < mat[i+k-1][j+k-1]){
+                        swap(mat, i+k, j+k, i+k-1, j+k-1);
+                    }
+                }
+            }
+        }
+
+
+        for(int i=0; i<n; i++){
+            int j =0;
+            for(int shift = 0; shift<n && shift<m; shift++){
+                for(int k=1; (j+k<=m-1-shift)&&(i+k<=n-1-shift); k++){
+                    if(mat[i+k][j + k] < mat[i+k-1][j +k-1]){
+                        swap(mat, i+k, j+k, i+k-1, j+k-1);
+                    }
+                }
+            }
+        }
+
+        return mat;
+
+    }
+    void swap(int[][] arr, int i1, int j1, int i2, int j2){
+        int temp = arr[i1][j1];
+        arr[i1][j1] = arr[i2][j2];
+        arr[i2][j2] = temp;
+    }
+
+}
+
+
