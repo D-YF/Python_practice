@@ -1,5 +1,6 @@
 import javax.smartcardio.TerminalFactory;
 
+import java.beans.Visibility;
 import java.util.*;
 
 public class LeetCode {
@@ -456,7 +457,7 @@ class Solution14 {
     }
 }
 
-class Solution {
+class Solution15 {
     public int[][] diagonalSort(int[][] mat) {
         int n=mat.length;
         int m=mat[0].length;
@@ -498,3 +499,247 @@ class Solution {
 }
 
 
+class Solution16 {
+    public int countDistinctIntegers(int[] nums) {
+        HashSet<Integer> hash = new HashSet<>();
+        int count = 0;
+        for(int num:nums){
+            if(!hash.contains(num)){
+                hash.add(num);
+                count++;
+            }
+            if(!hash.contains(reverse(num))){
+                hash.add(reverse(num));
+                count++;
+            }
+        }
+        return count;
+    }
+
+    int reverse(int num){
+        int ans = 0;
+        while(num!=0){
+            ans += 10*ans + num%10;
+            num /= num;
+        }
+        return ans;
+    }
+
+}
+
+
+class Solution17 {
+    public int longestSubstring(String s, int k) {
+        if(s.length() < k)
+            return 0;
+        
+        HashMap<Character, Integer> hash = new HashMap<>();
+        for(char c : s.toCharArray()){
+            hash.put(c, hash.getOrDefault(c, 0)+1);
+        }
+
+        for(char c: hash.keySet()){
+            if(hash.get(c) < k){
+                int ans = Integer.MIN_VALUE;
+                for(String str: s.split(String.valueOf(c))){
+                    ans = Math.max(ans, longestSubstring(str, k));
+                }
+                return ans;
+            }
+        }
+        return s.length();
+    }
+}
+
+class Solution18 {
+    List<String> ans = new ArrayList<>();
+    LinkedList<String> path = new LinkedList<>();
+
+    public List<String> restoreIpAddresses(String s) {
+        // invalid input
+        if(s.length()>15)
+            return ans;
+        backtrack(s, 1, 0);
+        return ans;
+    }
+
+    void backtrack(String s, int depth, int start_Index){
+        // final step
+        if(depth >4 && start_Index==s.length()){
+            ans.add(String.join(".", path));
+        }
+
+        // 3 digits at most
+        for(int i=start_Index; (i<start_Index+3)&&(i<s.length()); i++){
+            String substring = s.substring(start_Index, i+1);
+            int num = Integer.valueOf(substring);
+            // xxx.0~225.xxx
+            if(num<=255){
+                path.add(substring);
+                backtrack(s, depth+1, i+1);
+                path.removeLast();
+            }
+            // xxx.0.xxx
+            if(i==start_Index && num==0){
+                break;
+            }
+        }
+    }
+}
+
+
+class Solution19 {
+    public char[][] rotateTheBox(char[][] box) {
+        int n = box.length;
+        int m = box[0].length;
+        char[][] ans = new char[m][n];
+        for(int i=0; i<n; i++){
+            int bottom = m;
+            int j=m-1;
+            int count = 0 ;
+            while(j>=0){
+                ans[j][n-i-1] = '.';
+                if(box[i][j] == '#'){
+                    count++;
+                }
+
+                if(j==0 || box[i][j] == '*'){
+                    if(box[i][j] == '*')
+                        ans[j][n-i-1] = '*';
+                    for(int k=1; k<count; k++){
+                        ans[bottom-k][n-i-1] = '#';
+                    }
+                    bottom = j;
+                    count = 0;
+                }
+                j--;
+            }
+        }
+        return ans;
+    }
+}
+
+
+class Pair {
+ 
+    // Pair attributes
+    public int value1;
+    public int value2;
+ 
+    // Constructor to initialize pair
+    public Pair(int value1, int value2)
+    {
+        // This keyword refers to current instance
+        this.value1 = value1;
+        this.value2 = value2;
+    }
+}
+
+
+class Solution20 {
+    public boolean exist(char[][] board, String word) {
+        char[] word_char = word.toCharArray();
+
+        int m = board.length;
+        int n = board[0].length;
+        boolean[][] visited = new boolean[m][n];
+
+        boolean ans = false;
+
+        for(int i=0; i<m; i++){
+            for(int j=0; j<n; j++){
+                ans = ans || backtrack(board, word_char, 0, i, j, visited);
+            }
+        }
+        return ans;
+    }
+
+    boolean backtrack(char[][] board, char[] word, int depth, int row, int col, boolean[][] visited){
+        int N = word.length;
+        int m = board.length;
+        int n = board[0].length;
+
+        if(!visited[row][col] && word[depth]==board[row][col]){
+            if(depth == N-1)
+                return true;
+            visited[row][col] = true;
+            if((row+1)<m){
+                if(backtrack(board, word, depth+1, row+1, col, visited))
+                    return true;
+            }
+            if((col+1)<n){
+                if(backtrack(board, word, depth+1, row, col+1, visited))
+                    return true;
+            }
+            if((row-1)>=0){
+                if(backtrack(board, word, depth+1, row-1, col, visited))
+                    return true;
+            }
+            if((col-1)>=0){
+                if(backtrack(board, word, depth+1, row, col-1, visited))
+                    return true;
+            }
+            visited[row][col] = false;
+        }
+        return false;
+
+    }
+
+}
+
+
+class Solution21 {
+    // HashSet -> visited[][]
+    HashSet<Pair> path = new HashSet<>();
+
+    public boolean exist(char[][] board, String word) {
+        char[] word_char = word.toCharArray();
+
+        int m = board.length;
+        int n = board[0].length;
+        
+        boolean ans = false;
+
+        for(int i=0; i<m; i++){
+            for(int j=0; j<n; j++){
+                ans = ans || solve(board, word_char, 0, i, j);
+            }
+        }
+        return ans;
+    }
+
+    /*
+    boolean solve(char[][] board, char[] word, int depth, int row, int col){
+        int N = word.length;
+        int m = board.length;
+        int n = board[0].length;
+
+        if(depth==N){
+            return true;
+        }
+
+        Pair cord = new Pair(row,col);
+        if(!path.contains(cord) && word[depth]==board[row][col]){
+            path.add(cord);
+            if((row+1)<m){
+                if(solve(board, word, depth+1, row+1, col))
+                    return true;
+            }
+            if((col+1)<n){
+                if(solve(board, word, depth+1, row, col+1))
+                    return true;
+            }
+            if((row-1)>=0){
+                if(solve(board, word, depth+1, row-1, col))
+                    return true;
+            }
+            if((col-1)>=0){
+                if(solve(board, word, depth+1, row, col-1))
+                    return true;
+            }
+            path.remove(cord);
+        }
+        return false;
+    }
+    */
+}
